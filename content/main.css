@@ -46,6 +46,11 @@ input {
 
 #terminal #messages .message {
     word-break: break-all;
+    color: #ddd;
+}
+
+#terminal #messages pre {
+    display: inline-block;
 }
 
 #terminal #textbox {

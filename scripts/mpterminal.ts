@@ -51,7 +51,7 @@ class MPTerminal {
              MPTerminal, version 0.0.1<br/>\
              Available commands:<br/>";
         for(var cmd in this.commands) {
-            helpMessage += cmd + "&nbsp;&nbsp;&nbsp;&nbsp;" + this.commands[cmd] + "<br/>";
+            helpMessage += cmd + "<pre>"+this.calculateWhitespace(cmd)+"</pre>" + this.commands[cmd] + "<br/>";
         }
         this.messagesWindow.innerHTML += helpMessage;
     }
@@ -70,6 +70,10 @@ class MPTerminal {
         this.textInput = this.textboxWindow.querySelector("#terminalTextInput") as HTMLInputElement;
 
         this.textInput.onkeyup = this.handleInput;
+    }
+
+    private calculateWhitespace(text: string) {
+        return " ".repeat(20 - text.length);
     }
 }
 

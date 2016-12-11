@@ -41,7 +41,7 @@ var MPTerminal = (function () {
              MPTerminal, version 0.0.1<br/>\
              Available commands:<br/>";
         for (var cmd in this.commands) {
-            helpMessage += cmd + "&nbsp;&nbsp;&nbsp;&nbsp;" + this.commands[cmd] + "<br/>";
+            helpMessage += cmd + "<pre>" + this.calculateWhitespace(cmd) + "</pre>" + this.commands[cmd] + "<br/>";
         }
         this.messagesWindow.innerHTML += helpMessage;
     };
@@ -57,6 +57,9 @@ var MPTerminal = (function () {
         this.textboxWindow = target.querySelector("#textbox");
         this.textInput = this.textboxWindow.querySelector("#terminalTextInput");
         this.textInput.onkeyup = this.handleInput;
+    };
+    MPTerminal.prototype.calculateWhitespace = function (text) {
+        return " ".repeat(20 - text.length);
     };
     return MPTerminal;
 }());
