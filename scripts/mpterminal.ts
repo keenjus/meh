@@ -1,13 +1,16 @@
 class MPTerminal {
     public user: User;
+    private commands: Map<string, string>;
+    private history: Array<string>;
+    private version: string;
+
     private mainWindow: HTMLDivElement;
     private messagesWindow: HTMLDivElement;
     private textboxWindow: HTMLDivElement;
     private textInput: HTMLInputElement;
-    private commands: Map<string, string>;
-    private history: Array<string>;
 
     constructor(selector: string) {
+        this.version = "0.0.2";
         this.history = new Array<string>();
         this.user = new User("hackerman", "desktop");
         this.setupCommands();
@@ -15,15 +18,15 @@ class MPTerminal {
     }
 
     private handleInput = (event: KeyboardEvent) => {
-        var input: HTMLInputElement = event.target as HTMLInputElement;        
-        switch(event.keyCode) {
+        var input: HTMLInputElement = event.target as HTMLInputElement;
+        switch (event.keyCode) {
             case 13:
                 this.history.push(input.value);
                 this.printToConsole(input.value);
                 input.value = "";
                 break;
             case 38:
-                if(this.history.length === 0) return;
+                if (this.history.length === 0) return;
                 input.value = this.history[this.history.length - 1];
                 break;
         }
@@ -33,21 +36,21 @@ class MPTerminal {
         var split = text.split(" ");
         var cmd = split[0];
         var params = split.slice(1);
-        switch(cmd) {
+        switch (cmd) {
             case "help":
                 this.printHelp();
                 break;
             case "go":
-                if(params.length > 0) {
-                    if(params[0].indexOf("://") === -1){
+                if (params.length > 0) {
+                    if (params[0].indexOf("://") === -1) {
                         params[0] = "http://" + params[0];
                     }
                     window.open(params[0], "_blank");
                 }
                 break;
             case "bg":
-                if(params.length > 0){
-                    if(/^#[0-9A-F]{3,6}$/i.test(params[0])) {
+                if (params.length > 0) {
+                    if (/^#[0-9A-F]{3,6}$/i.test(params[0])) {
                         this.mainWindow.style.backgroundColor = params[0];
                     }
                 }
@@ -58,16 +61,16 @@ class MPTerminal {
     }
 
     printToConsole(text: string) {
-        this.messagesWindow.innerHTML += "<div class=\"message\"><span class=\"username\">"+this.user.name+"</span>@<span class=\"domain\">"+this.user.domain+"</span>$: " + text + "</div>";
+        this.messagesWindow.innerHTML += "<div class=\"message\"><span class=\"username\">" + this.user.name + "</span>@<span class=\"domain\">" + this.user.domain + "</span>$: " + text + "</div>";
         this.handleCommand(text);
     }
 
     printHelp() {
         var helpMessage = "\
-             MPTerminal, version 0.0.1<br/>\
+             MPTerminal, version "+ this.version + "<br/>\
              Available commands:<br/>";
-        for(var cmd in this.commands) {
-            helpMessage += cmd + "<pre>"+this.calculateWhitespace(cmd)+"</pre>" + this.commands[cmd] + "<br/>";
+        for (var cmd in this.commands) {
+            helpMessage += cmd + "<pre>" + this.calculateWhitespace(cmd) + "</pre>" + this.commands[cmd] + "<br/>";
         }
         this.messagesWindow.innerHTML += helpMessage;
     }

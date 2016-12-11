@@ -16,6 +16,7 @@ var MPTerminal = (function () {
                     break;
             }
         };
+        this.version = "0.0.2";
         this.history = new Array();
         this.user = new User("hackerman", "desktop");
         this.setupCommands();
@@ -54,7 +55,7 @@ var MPTerminal = (function () {
     };
     MPTerminal.prototype.printHelp = function () {
         var helpMessage = "\
-             MPTerminal, version 0.0.1<br/>\
+             MPTerminal, version " + this.version + "<br/>\
              Available commands:<br/>";
         for (var cmd in this.commands) {
             helpMessage += cmd + "<pre>" + this.calculateWhitespace(cmd) + "</pre>" + this.commands[cmd] + "<br/>";
