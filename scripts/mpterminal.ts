@@ -5,18 +5,27 @@ class MPTerminal {
     private textboxWindow: HTMLDivElement;
     private textInput: HTMLInputElement;
     private commands: Map<string, string>;
+    private history: Array<string>;
 
     constructor(selector: string) {
+        this.history = new Array<string>();
         this.user = new User("hackerman", "desktop");
         this.setupCommands();
         this.setupElements(document.querySelector(selector) as HTMLDivElement);
     }
 
     private handleInput = (event: KeyboardEvent) => {
-        if(event.keyCode === 13) {
-            var input: HTMLInputElement = event.target as HTMLInputElement;
-            this.printToConsole(input.value);
-            input.value = "";
+        var input: HTMLInputElement = event.target as HTMLInputElement;        
+        switch(event.keyCode) {
+            case 13:
+                this.history.push(input.value);
+                this.printToConsole(input.value);
+                input.value = "";
+                break;
+            case 38:
+                if(this.history.length === 0) return;
+                input.value = this.history[this.history.length - 1];
+                break;
         }
     }
 
@@ -34,6 +43,13 @@ class MPTerminal {
                         params[0] = "http://" + params[0];
                     }
                     window.open(params[0], "_blank");
+                }
+                break;
+            case "bg":
+                if(params.length > 0){
+                    if(/^#[0-9A-F]{3,6}$/i.test(params[0])) {
+                        this.mainWindow.style.backgroundColor = params[0];
+                    }
                 }
                 break;
             default:
@@ -60,6 +76,7 @@ class MPTerminal {
         this.commands = new Map<string, string>();
         this.commands["help"] = "display this help page";
         this.commands["go"] = "open a new webpage";
+        this.commands["bg"] = "change the background color(hex)";
     }
 
     private setupElements(target: HTMLDivElement) {
