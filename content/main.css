@@ -41,6 +41,7 @@ input {
     height: calc(100% - 24px);
 
     color: white;
+    overflow: auto;
 }
 
 #terminal #messages .message {
