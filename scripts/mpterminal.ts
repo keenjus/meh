@@ -21,9 +21,13 @@ class MPTerminal {
         var input: HTMLInputElement = event.target as HTMLInputElement;
         switch (event.keyCode) {
             case 13:
+                var scrolledToBottom: boolean = this.messagesWindow.scrollTop === (this.messagesWindow.scrollHeight - this.messagesWindow.offsetHeight);
                 this.history.push(input.value);
                 this.printToConsole(input.value);
                 input.value = "";
+                if (scrolledToBottom) {
+                    this.messagesWindow.scrollTop = this.messagesWindow.scrollHeight;
+                }
                 break;
             case 38:
                 if (this.history.length === 0) return;
