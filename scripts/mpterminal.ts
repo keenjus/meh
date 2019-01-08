@@ -12,7 +12,7 @@ class MPTerminal {
     constructor(selector: string) {
         this.version = "0.0.2";
         this.history = new Array<string>();
-        this.user = new User("hackerman", "desktop");
+        this.user = new User("h4ckerman", "desktop");
         this.setupCommands();
         this.setupElements(document.querySelector(selector) as HTMLDivElement);
     }
